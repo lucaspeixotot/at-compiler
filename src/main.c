@@ -10,7 +10,8 @@ uart_t bt_uart = {0};
 
 void main(void) {
 
-    int err = uart_open(&bt_uart, DT_UART_STM32_USART_2_NAME);
+    /* int err = uart_open(&bt_uart, DT_UART_STM32_USART_2_NAME); */
+    int err = uart_open(&bt_uart, DT_UART_SHELL_ON_DEV_NAME);
     if (err) {
         return;
     }
