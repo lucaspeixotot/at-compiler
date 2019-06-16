@@ -1,0 +1,176 @@
+/*
+ * Copyright (c) 2018 Trucks Control
+ *
+ */
+
+/dts-v1/;
+#include <st/f0/stm32f091Xc.dtsi>
+
+/ {
+	soc {
+		usart3: serial@40004800 {
+			compatible = "st,stm32-usart", "st,stm32-uart";
+			reg = <0x40004800 0x400>;
+			clocks = <&rcc STM32_CLOCK_BUS_APB1 0x00040000>;
+			interrupts = <29 0>;
+			status = "disabled";
+			label = "UART_3";
+		};
+		usart4: serial@40004C00 {
+			compatible = "st,stm32-usart", "st,stm32-uart";
+			reg = <0x40004C00 0x400>;
+			clocks = <&rcc STM32_CLOCK_BUS_APB1 0x00080000>;
+			interrupts = <29 0>;
+			status = "disabled";
+			label = "UART_4";
+		};
+		pinctrl: pin-controller@48000000 {
+			usart3_pins_a: usart3_a {
+				rx_tx {
+					rx = <STM32_PIN_PB11 (STM32_PINMUX_ALT_FUNC_4 | STM32_PUPDR_NO_PULL)>;
+					tx = <STM32_PIN_PB10 (STM32_PINMUX_ALT_FUNC_4 | STM32_PUSHPULL_PULLUP)>;
+				};
+			};
+			usart4_pins_a: usart4_a {
+				rx_tx {
+					rx = <STM32_PIN_PA1 (STM32_PINMUX_ALT_FUNC_4 | STM32_PUPDR_NO_PULL)>;
+					tx = <STM32_PIN_PA0 (STM32_PINMUX_ALT_FUNC_4 | STM32_PUSHPULL_PULLUP)>;
+				};
+			};
+		};
+	};
+};
+
+/ {
+	model = "TRUCKS CONTROL BAIT Prototype 1 board";
+	compatible = "st,stm32f091";
+
+	chosen {
+		zephyr,console = &usart2;
+		zephyr,shell-uart = &usart2;
+		zephyr,sram = &sram0;
+		zephyr,flash = &flash0;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+		red_led: led_1 {
+			gpios = <&gpiob 14 GPIO_DIR_OUT>;
+			label = "Red LED";
+		};
+		green_led: led_2 {
+			gpios = <&gpiob 15 GPIO_DIR_OUT>;
+			label = "Green LED";
+		};
+	};
+
+	gpio_keys {
+		compatible = "gpio-keys";
+		// Entradas - Inicio
+		nfc_gpo: nfc1 {
+			label = "NFC Wake-Up";
+			gpios = <&gpioa 4 (GPIO_DIR_IN | GPIO_INT | GPIO_PUD_PULL_UP | GPIO_INT_EDGE | GPIO_INT_DOUBLE_EDGE | GPIO_INT_DEBOUNCE)>;
+		};
+		ps_pgood: ps1 {
+			label = "PS PGOOD";
+			gpios = <&gpiob 1 (GPIO_DIR_IN | GPIO_INT | GPIO_PUD_PULL_UP | GPIO_INT_EDGE | GPIO_INT_DOUBLE_EDGE | GPIO_INT_DEBOUNCE)>;
+		};
+		ps_chg: ps2 {
+			label = "PS CHG";
+			gpios = <&gpiob 0 (GPIO_DIR_IN | GPIO_INT | GPIO_PUD_PULL_UP | GPIO_INT_EDGE | GPIO_INT_DOUBLE_EDGE | GPIO_INT_DEBOUNCE)>;
+		};
+		acc_int1: acc1 {
+			label = "ACC INT1";
+			gpios = <&gpioa 9 (GPIO_DIR_IN | GPIO_INT | GPIO_PUD_PULL_UP | GPIO_INT_EDGE | GPIO_INT_DOUBLE_EDGE | GPIO_INT_DEBOUNCE)>;
+		};
+		acc_int2: acc2 {
+			label = "ACC INT2";
+			gpios = <&gpioa 8 (GPIO_DIR_IN | GPIO_INT | GPIO_PUD_PULL_UP | GPIO_INT_EDGE | GPIO_INT_DOUBLE_EDGE | GPIO_INT_DEBOUNCE)>;
+		};
+		// Entradas - Fim
+		// Saidas - Inicio
+		lora_boot0: lora1 {
+			label = "LORA BOOT0";
+			gpios = <&gpioa 5 GPIO_DIR_OUT>;
+		};
+		lora_reset: lora2 {
+			label = "LORA RESET";
+			gpios = <&gpioa 6 GPIO_DIR_OUT>;
+		};
+		lora_wkup1: lora3 {
+			label = "LORA WAKE-UP";
+			gpios = <&gpioa 7 GPIO_DIR_OUT>;
+		};
+		bt_reset: bt1 {
+			label = "BLUETOOTH RESET";
+			gpios = <&gpiob 5 GPIO_DIR_OUT>;
+		};
+		bt_hangup: bt2 {
+			label = "BLUETOOTH HANGUP";
+			gpios = <&gpiob 4 GPIO_DIR_OUT>;
+		};
+		gps_reset: gps1 {
+			label = "GPS RESET";
+			gpios = <&gpioa 10 GPIO_DIR_OUT>;
+		};
+		gps_wakeup: gps2 {
+			label = "GPS WAKE-UP";
+			gpios = <&gpioa 11 GPIO_DIR_OUT>;
+		};
+		// Saidas - Fim
+	};
+
+	aliases {
+		led-red = &red_led;
+		led-green = &green_led;
+		nfc-gpo = &nfc_gpo;
+		ps-pgood = &ps_pgood;
+		ps-chg = &ps_chg;
+		acc-int1 = &acc_int1;
+		acc-int2 = &acc_int2;
+		lora-boot0 = &lora_boot0;
+		lora-reset = &lora_reset;
+		lora-wakeup = &lora_wkup1;
+		bt-reset = &bt_reset;
+		bt-hangup = &bt_hangup;
+		gps-reset = &gps_reset;
+		gps-wakeup = &gps_wakeup;
+	};
+};
+
+// BLUETOOTH
+&usart1 {
+	current-speed = <115200>;
+	pinctrl-0 = <&usart1_pins_a>;
+	pinctrl-names = "default";
+	status = "ok";
+};
+
+// CONSOLE
+&usart2 {
+	current-speed = <115200>;
+	pinctrl-0 = <&usart2_pins_a>;
+	pinctrl-names = "default";
+	status = "ok";
+};
+
+// GPS
+// &usart3 {
+// 	current-speed = <115200>;
+// 	pinctrl-0 = <&usart3_pins_a>;
+// 	pinctrl-names = "default";
+// 	status = "ok";
+// };
+
+// LORA
+&usart4 {
+	current-speed = <57600>;
+	pinctrl-0 = <&usart4_pins_a>;
+	pinctrl-names = "default";
+	status = "ok";
+};
+
+&i2c1 {
+	status = "ok";
+	clock-frequency = <I2C_BITRATE_FAST>;
+};

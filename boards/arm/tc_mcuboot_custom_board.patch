@@ -1,0 +1,20 @@
+diff --git a/boot/zephyr/CMakeLists.txt b/boot/zephyr/CMakeLists.txt
+index 470103c..1b7fd13 100644
+--- a/boot/zephyr/CMakeLists.txt
++++ b/boot/zephyr/CMakeLists.txt
+@@ -19,7 +19,14 @@ macro(set_conf_file)
+ endmacro()
+ 
+ # Default to qemu_x86 if no board has been specified.
+-set(BOARD qemu_x86)
++#set(BOARD qemu_x86)
++
++if (NOT DEFINED BOARD)
++  set(BOARD_ROOT /home/rodrigopex/MEGA/Venus/Projects/edge/trucks_control/trucks-control-tracker-fw/)
++  set(BOARD tc_ext_p2)
++  # ISCA ->set(BOARD_ROOT /home/rodrigopex/MEGA/Venus/Projects/EmbeddedSW/zeta-samples/toggle_led/)
++  # ISCA -> set(BOARD nucleo_f091rc)
++endif()
+ 
+ # Add a common dts overlay necessary to ensure mcuboot is linked into,
+ # and fits inside, the boot partition. (If the user specified a

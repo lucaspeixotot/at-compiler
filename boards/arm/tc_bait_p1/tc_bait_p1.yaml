@@ -1,0 +1,11 @@
+identifier: tc_bait_p1
+name: TC_BAIT_P1
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+  - gnuarmemb
+ram: 32
+flash: 256
+supported:
+  - i2c

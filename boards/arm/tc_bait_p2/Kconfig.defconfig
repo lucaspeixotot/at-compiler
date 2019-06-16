@@ -1,0 +1,53 @@
+# Kconfig - Trucks Control Bait P1 board with STM32F091CC MCU configuration
+#
+# Copyright (c) 2018 Trucks Control
+#
+#
+
+if BOARD_TC_BAIT_P2
+
+config BOARD
+	default "tc_bait_p2"
+
+config UART_1
+	default y
+
+# UART 3 is configured using STM32CUBEMX generated functions
+
+config UART_4
+	default y
+
+config USE_STM32_LL_USART
+	default y
+
+config USE_STM32_LL_GPIO
+	default y
+
+config USE_STM32_HAL_PWR
+	default y
+
+if UART_CONSOLE
+
+config UART_2
+	default y
+
+endif # UART_CONSOLE
+
+# RTC configuration
+
+if RTC
+
+config RTC_0
+	bool
+	default y
+
+endif # RTC
+
+if I2C
+
+config I2C_1
+	default y
+
+endif # I2C
+
+endif # BOARD_TC_BAIT_P1

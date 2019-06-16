@@ -1,0 +1,9 @@
+# Kconfig - Trucks Control Bait P1 board with STM32F091CC MCU configuration
+#
+# Copyright (c) 2018 Trucks Control
+#
+#
+
+config BOARD_TC_BAIT_P2
+	bool "TRUCKS CONTROL BAIT Prototype 1"
+	depends on SOC_STM32F091XC

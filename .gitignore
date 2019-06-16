@@ -1,0 +1,7 @@
+GRTAGS
+tags
+TAGS
+GPATH
+GTAGS
+build/
+boards/arm/**/support/
