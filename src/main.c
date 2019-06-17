@@ -29,7 +29,6 @@ void main(void) {
     u8_t data = 0;
 
     while (1) {
-        k_msgq_get(bt_uart.in, &data, K_NO_WAIT);
         printk("haha -> %c\n", data);
         k_sleep(K_MSEC(100));
     }

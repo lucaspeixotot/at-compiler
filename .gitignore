@@ -4,4 +4,3 @@ TAGS
 GPATH
 GTAGS
 build/
-boards/arm/**/support/
